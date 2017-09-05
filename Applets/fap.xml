@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FreestyleAppPack>
+<AppPackId>AppletNamePH</AppPackId>
+<EntryFile>src/main.lua</EntryFile>
+<AppPackPath>AppletNamePH</AppPackPath>
+<LuaModules>
+<LuaModuleId>1</LuaModuleId>
+<LuaModuleId>2</LuaModuleId>
+<LuaModuleId>3</LuaModuleId>
+<LuaModuleId>5</LuaModuleId>
+</LuaModules>
+<Sources>
+<LuaFile>src/main.lua</LuaFile>
+</Sources>
+</FreestyleAppPack>
