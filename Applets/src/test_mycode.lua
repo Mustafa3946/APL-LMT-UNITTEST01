@@ -1,5 +1,5 @@
 
-local luaunit = require('luaunit')
+local luaunit = require('src.luaunit')
 
 TestAdd = {}
 function TestAdd:testAddPositive()
