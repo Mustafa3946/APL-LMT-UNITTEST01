@@ -4,7 +4,6 @@
 package.path = package.path .. ';sim/?.lua' -- works on Windows or Linux
 package.path = package.path .. ';tst/?.lua' -- works on Windows or Linux
 
-local responses = require("src.responses")
 local bit       = require("bit")
 local def       = require("src.defines")
 local loradef   = require("src.loradef")
@@ -13,6 +12,8 @@ local loraNic   = require("tst.test_loraNic")
 local loraData  = require("tst.test_loraNicData")
 local frag      = require("src.fragmentedMessage")
 local json      = require("lib.dkjson.dkjson")
+local luaunit   = require("tst.luaunit")
+
 
 require(def.module.deviceMgr)
 require("src.lorautils")
@@ -26,6 +27,15 @@ local eid2 = "78:56:43:21:00:00:00:00"
 local devices = {}
 print("FME instance: ", tostring(fme))
 
+TestResponse    =   {}
+arg1            =   {}
+arg2            =   {}
+function TestResponse:testResponse(arg1,arg2)
+    luaunit.assertEquals(arg1,arg2)
+    --luaunit.assertStrMatches(arg1,arg2)
+end
+
+
 ---------------------------------------------------------------------------------------------------
 -- Catch all fme.sendmessage calls
 local function sendmessageCallback(msg)
@@ -35,6 +45,16 @@ local function sendmessageCallback(msg)
     if msg["TYPE"] == "L1" then
         LoraNicList[eid].handleLoraMessage(msg)
     end
+    if msg.error_details ~= nil then
+        arg1                        =   msg.error_details
+        arg2                        =   "MP_STATUS_SUCCESS"
+        luaunit.LuaUnit.verbosity   =   2
+        local runner                =   luaunit.LuaUnit.new()
+        runner:setOutputType("tap")
+        os.exit( runner:runSuite() )
+
+    end
+
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -48,35 +68,13 @@ local function tableLen(tab)
 end
 
 ---------------------------------------------------------------------------------------------------
-local function matchFMSRequestResponses(requests, responses)
-    local match = false
-    local allFound = true
-    for cid, req in pairs(requests) do
-        local resp = responses[cid]
-        if resp ~= nil then
-            if req.eid == resp.eid then
-                if req.msgname == resp.msgname then
-
-                    match = true
-                else
-                    allFound = false
-                    break
-                end
-            else
-                print("waaaa!")
-            end
-        end
-    end
-
-    if allFound then
-        print()
-    end
-end
-
----------------------------------------------------------------------------------------------------
 -- Catch all fme.sendmessage calls
-local function getmessageCallback()
-
+local function getmessageCallback(msg)
+    if msg ~= nil then
+        local cid = msg["cid"]
+        local eid = msg["eid"]
+        local payload = msg["payload"]
+    end
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -247,19 +245,6 @@ local function test_ylAlert(code)
     fme.sim.push(nicmsg)
 end
 
----------------------------------------------------------------------------------------------------
-local function test_processGetMcMeterStatus()
-    local nicmsg = {}
-    nicmsg["TYPE"]  = "L1"
-    nicmsg["eid"] = eid1
-    local tbl = {}
-    tbl["result_code"] = loradef.MP_STATUS_SUCCESS
-    nicmsg["payload"] = mkPacket(loradef.ENDPOINT_METERING, getTracknum(), 4, "00010203")
-    local nicPayload = string.sub(nicmsg["payload"], 5)
-    local result = responses.processGetMcMeterStatus(tbl, nicPayload)
-    
-    return result
-end
 
 ---------------------------------------------------------------------------------------------------
 local function test_getMeterShutoff()
@@ -380,13 +365,6 @@ local function test_setCustId()
     fme.sim.push_fmsRequest(eid1, def.msgid.SET_METER_CUSTOMERID, def.name[def.msgid.SET_METER_CUSTOMERID],  extras)
 end
 
----------------------------------------------------------------------------------------------------
-local function test_getMeterType_1()
-    local tbl = {}
-    tbl["result_code"] = loradef.MP_STATUS_SUCCESS
-    local bytesAfterCmd = "000102"
-    responses.processGetMeterType(tbl, bytesAfterCmd)
-end
 
 ---------------------------------------------------------------------------------------------------
 local function test_getMeterType_2(eid)
@@ -532,7 +510,7 @@ local bundleName = "SomeBundle"
 init(eid1, bundleName)
 init(eid2, bundleName)
 
-----[[
+--[[
 fme.sim.push_fmsRequest(eid1, def.msgid.GET_METER_GAS_VALVE_STATE,      "GET_METER_GAS_VALVE_STATE",        nil)
 fme.sim.push_fmsRequest(eid1, def.msgid.GET_METER_SUMMATION_DELIVERED,  "GET_METER_SUMMATION_DELIVERED",    nil)
 fme.sim.push_fmsRequest(eid1, def.msgid.GET_OFLOW_DETECT_DURATION,      "GET_OFLOW_DETECT_DURATION",        nil)
@@ -571,8 +549,8 @@ fme.sim.push_fmsRequest(eid1, def.msgid.GET_METER_TIME,                 "GET_MET
 fme.sim.push_fmsRequest(eid1, def.msgid.GET_METER_STATUS,               "GET_METER_STATUS",                 nil)
 --]]
 
-
-----[[
+test_setEarthquake()
+--[[
 test_getMeterType_2(eid1)
 test_setMeterStatus()
 test_unsolicitedPressureGet()
@@ -583,7 +561,6 @@ test_processAlert(loradef.YUNGLOONG_LORA_ALERT, 2)
 test_setSerial()
 test_duplicateFirstFragment(eid1)
 
-test_setEarthquake()
 test_setPilot()
 test_setMeterComms()
 
@@ -620,10 +597,10 @@ pushRandomMessages(100)
 --]]
 
 --fme.sim.push_testEnd()
---test_processGetMcMeterStatus()
 
 fme.sim.registerCallback("sendmessage", sendmessageCallback)
 fme.sim.registerCallback("getmessage",  getmessageCallback)
 fme.sim.registerCallback("testdone",    testDoneCallback)
 
 require("src.main")
+
