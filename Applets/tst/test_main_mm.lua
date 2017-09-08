@@ -30,6 +30,8 @@ print("FME instance: ", tostring(fme))
 TestResponse    =   {}
 arg1            =   {}
 arg2            =   {}
+
+
 function TestResponse:testResponse(arg1,arg2)
     luaunit.assertEquals(arg1,arg2)
     --luaunit.assertStrMatches(arg1,arg2)
@@ -50,8 +52,10 @@ local function sendmessageCallback(msg)
         arg2                        =   "MP_STATUS_SUCCESS"
         luaunit.LuaUnit.verbosity   =   2
         local runner                =   luaunit.LuaUnit.new()
-        runner:setOutputType("tap")
-        os.exit( runner:runSuite() )
+        --runner:setOutputType("tap")
+        runner:setOutputType("junit")
+        --os.exit( runner:runSuite() )
+        runner:runSuite("-v","-n", "report.txt") 
 
     end
 
@@ -550,6 +554,7 @@ fme.sim.push_fmsRequest(eid1, def.msgid.GET_METER_STATUS,               "GET_MET
 --]]
 
 test_setEarthquake()
+test_setMeterStatus()
 --[[
 test_getMeterType_2(eid1)
 test_setMeterStatus()
