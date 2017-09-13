@@ -7,8 +7,8 @@ package.path = package.path .. ';src/?.lua' -- works on Windows or Linux
 package.path = package.path .. ';lib/?.lua' -- works on Windows or Linux
 
 local bit       = require("bit")
-local def       = require("src.defines")
-local loradef   = require("src.loradef")
+local def       = require("src/defines")
+local loradef   = require("src/loradef")
 local fme       = require(def.module.fme)
 local loraNic   = require("tst.test_loraNic")
 local loraData  = require("tst.test_loraNicData")
