@@ -3,6 +3,8 @@
 --------------------------------------------------------------------------------------------------- 
 package.path = package.path .. ';sim/?.lua' -- works on Windows or Linux
 package.path = package.path .. ';tst/?.lua' -- works on Windows or Linux
+package.path = package.path .. ';src/?.lua' -- works on Windows or Linux
+package.path = package.path .. ';lib/?.lua' -- works on Windows or Linux
 
 local bit       = require("bit")
 local def       = require("src.defines")
