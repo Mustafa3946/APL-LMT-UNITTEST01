@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <testsuites>
-    <testsuite name="LuaUnit" id="00001" package="" hostname="localhost" tests="1" timestamp="2017-09-13T13:09:04" time="0.016" errors="0" failures="0">
+    <testsuite name="LuaUnit" id="00001" package="" hostname="localhost" tests="1" timestamp="2017-09-13T13:17:23" time="0.000" errors="0" failures="0">
         <properties>
             <property name="Lua Version" value="Lua 5.1"/>
             <property name="LuaUnit Version" value="3.2"/>
@@ -13,7 +13,7 @@
 </testsuites>
 <?xml version="1.0" encoding="UTF-8" ?>
 <testsuites>
-    <testsuite name="LuaUnit" id="00001" package="" hostname="localhost" tests="1" timestamp="2017-09-13T13:09:04" time="0.000" errors="0" failures="0">
+    <testsuite name="LuaUnit" id="00001" package="" hostname="localhost" tests="1" timestamp="2017-09-13T13:17:23" time="0.016" errors="0" failures="0">
         <properties>
             <property name="Lua Version" value="Lua 5.1"/>
             <property name="LuaUnit Version" value="3.2"/>
