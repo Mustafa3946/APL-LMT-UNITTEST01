@@ -60,7 +60,6 @@ local function sendmessageCallback(msg)
         runner:setOutputType("junit")
         --os.exit( runner:runSuite() )
         runner:runSuite("-v","-n", "report") 
-
     end
 
 end
@@ -82,6 +81,8 @@ local function getmessageCallback(msg)
         local cid = msg["cid"]
         local eid = msg["eid"]
         local payload = msg["payload"]
+    else
+        os.exit()
     end
 end
 
@@ -558,7 +559,7 @@ fme.sim.push_fmsRequest(eid1, def.msgid.GET_METER_STATUS,               "GET_MET
 --]]
 
 test_setEarthquake()
-test_setMeterStatus()
+--test_setMeterStatus()
 --[[
 test_getMeterType_2(eid1)
 test_setMeterStatus()
