@@ -89,7 +89,7 @@ Options:
 ]]
 
 local is_equal -- defined here to allow calling from mismatchFormattingPureList
-
+os.remove("report.xml")
 ----------------------------------------------------------------
 --
 --                 general utility functions
@@ -1699,7 +1699,7 @@ JUnitOutput.__class__ = 'JUnitOutput'
         if string.sub(self.fname,-4) ~= '.xml' then
             self.fname = self.fname..'.xml'
         end
-        self.fd = io.open(self.fname, "w")
+        self.fd = io.open(self.fname, "a")
         if self.fd == nil then
             error("Could not open file for writing: "..self.fname)
         end

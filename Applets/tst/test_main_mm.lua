@@ -28,11 +28,13 @@ local devices = {}
 print("FME instance: ", tostring(fme))
 
 TestResponse    =   {}
-arg1            =   {}
-arg2            =   {}
+local arg1            =   {}
+local arg2            =   {}
+local reportNumber    =   0
+local reportCommand   =   ""
 
-
-function TestResponse:testResponse(arg1,arg2)
+function TestResponse:testResponse()
+    print("Test number  :   ", reportNumber, " Command name    :   ",  reportCommand)
     luaunit.assertEquals(arg1,arg2)
     --luaunit.assertStrMatches(arg1,arg2)
 end
@@ -41,13 +43,15 @@ end
 ---------------------------------------------------------------------------------------------------
 -- Catch all fme.sendmessage calls
 local function sendmessageCallback(msg)
-    local cid = msg["cid"]
-    local eid = msg["eid"]
-    local payload = msg["payload"]
+    local cid       =   msg["cid"]
+    local eid       =   msg["eid"]
+    local payload   =   msg["payload"]
     if msg["TYPE"] == "L1" then
         LoraNicList[eid].handleLoraMessage(msg)
     end
     if msg.error_details ~= nil then
+        reportNumber                =   reportNumber    +   1
+        reportCommand               =   msg.msgname
         arg1                        =   msg.error_details
         arg2                        =   "MP_STATUS_SUCCESS"
         luaunit.LuaUnit.verbosity   =   2
@@ -55,7 +59,7 @@ local function sendmessageCallback(msg)
         --runner:setOutputType("tap")
         runner:setOutputType("junit")
         --os.exit( runner:runSuite() )
-        runner:runSuite("-v","-n", "report.txt") 
+        runner:runSuite("-v","-n", "report") 
 
     end
 
@@ -488,7 +492,7 @@ end
 
 local function test_setLeakDetectRange()
     local extras = {}
-    extras["leak_detect_range"]          = 250
+    extras["leak_detect_range"]                   = 250
     fme.sim.push_fmsRequest(eid1, def.msgid.SET_LEAK_DETECT_RANGE, def.name[def.msgid.SET_LEAK_DETECT_RANGE], extras)      
 end
 
