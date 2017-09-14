@@ -1699,7 +1699,7 @@ JUnitOutput.__class__ = 'JUnitOutput'
         if string.sub(self.fname,-4) ~= '.xml' then
             self.fname = self.fname..'.xml'
         end
-        self.fd = io.open(self.fname, "a")
+        self.fd = io.open(self.fname, "w")
         if self.fd == nil then
             error("Could not open file for writing: "..self.fname)
         end
