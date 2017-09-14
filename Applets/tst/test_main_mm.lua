@@ -13,7 +13,7 @@ local loraData  = require("tst.test_loraNicData")
 local frag      = require("src.fragmentedMessage")
 local json      = require("lib.dkjson.dkjson")
 local luaunit   = require("tst.luaunit")
-
+local test_unit = require("tst.test_unit")
 
 require(def.module.deviceMgr)
 require("src.lorautils")
@@ -27,29 +27,11 @@ local eid2 = "78:56:43:21:00:00:00:00"
 local devices = {}
 print("FME instance: ", tostring(fme))
 
-TestResponse    =   {}
 local arg1            =   {}
 local arg2            =   {}
 local reportNumber    =   0
 local reportCommand   =   {}
 
-function TestResponse:testSET_EARTHQUAKE_SENSOR_STATE()
-    for i = 1, reportNumber do
-        if reportCommand[i] == "SET_EARTHQUAKE_SENSOR_STATE" then
-            print("Test number  :   ", i, " Command name    :   ",  reportCommand[i])
-            luaunit.assertEquals(arg1[i],arg2[i])
-        end        
-    end
-end
-
-function TestResponse:testSET_METER_STATUS()
-    for i = 1, reportNumber do
-        if reportCommand[i] == "SET_METER_STATUS" then
-            print("Test number  :   ", i, " Command name    :   ",  reportCommand[i])
-            luaunit.assertEquals(arg1[i],arg2[i])
-        end        
-    end
-end
 
 ---------------------------------------------------------------------------------------------------
 -- Catch all fme.sendmessage calls
@@ -61,10 +43,10 @@ local function sendmessageCallback(msg)
         LoraNicList[eid].handleLoraMessage(msg)
     end
     if msg.error_details ~= nil then
-        reportNumber                =   reportNumber    +   1
-        reportCommand[reportNumber] =   msg.msgname
-        arg1[reportNumber]          =   msg.error_details
-        arg2[reportNumber]          =   "MP_STATUS_SUCCESS"
+        test_unit.reportNumber                =   test_unit.reportNumber    +   1
+        test_unit.reportCommand[reportNumber] =   msg.msgname
+        test_unit.arg1[reportNumber]          =   msg.error_details
+        test_unit.arg2[reportNumber]          =   "MP_STATUS_SUCCESS"
     end
 
 end
