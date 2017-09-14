@@ -13,7 +13,8 @@ local loraData  = require("tst.test_loraNicData")
 local frag      = require("src.fragmentedMessage")
 local json      = require("lib.dkjson.dkjson")
 local luaunit   = require("tst.luaunit")
-local test_unit = require("tst.test_unit")
+local TestResponse = require("tst.test_unit")
+TestResponse.new()
 
 require(def.module.deviceMgr)
 require("src.lorautils")
@@ -27,11 +28,12 @@ local eid2 = "78:56:43:21:00:00:00:00"
 local devices = {}
 print("FME instance: ", tostring(fme))
 
+--[[
 local arg1            =   {}
 local arg2            =   {}
 local reportNumber    =   0
 local reportCommand   =   {}
-
+--]]
 
 ---------------------------------------------------------------------------------------------------
 -- Catch all fme.sendmessage calls
@@ -39,14 +41,14 @@ local function sendmessageCallback(msg)
     local cid       =   msg["cid"]
     local eid       =   msg["eid"]
     local payload   =   msg["payload"]
-    if msg["TYPE"] == "L1" then
+    if msg["TYPE"]  ==  "L1" then
         LoraNicList[eid].handleLoraMessage(msg)
     end
     if msg.error_details ~= nil then
-        test_unit.reportNumber                =   test_unit.reportNumber    +   1
-        test_unit.reportCommand[reportNumber] =   msg.msgname
-        test_unit.arg1[reportNumber]          =   msg.error_details
-        test_unit.arg2[reportNumber]          =   "MP_STATUS_SUCCESS"
+        TestResponse.reportNumber                             =   TestResponse.reportNumber    +   1
+        TestResponse.reportCommand[TestResponse.reportNumber] =   msg.msgname
+        TestResponse.arg1[TestResponse.reportNumber]          =   msg.error_details
+        TestResponse.arg2[TestResponse.reportNumber]          =   "MP_STATUS_SUCCESS"
     end
 
 end
@@ -511,10 +513,11 @@ local bundleName = "SomeBundle"
 init(eid1, bundleName)
 init(eid2, bundleName)
 
---[[
 fme.sim.push_fmsRequest(eid1, def.msgid.GET_METER_GAS_VALVE_STATE,      "GET_METER_GAS_VALVE_STATE",        nil)
 fme.sim.push_fmsRequest(eid1, def.msgid.GET_METER_SUMMATION_DELIVERED,  "GET_METER_SUMMATION_DELIVERED",    nil)
 fme.sim.push_fmsRequest(eid1, def.msgid.GET_OFLOW_DETECT_DURATION,      "GET_OFLOW_DETECT_DURATION",        nil)
+
+--[[
 fme.sim.push_fmsRequest(eid1, def.msgid.GET_PROTOCOL_VERSION,           "GET_PROTOCOL_VERSION",             nil) 
 fme.sim.push_fmsRequest(eid1, def.msgid.GET_METER_SERIAL_NUMBER,        "GET_METER_SERIAL_NUMBER",          nil)  
 fme.sim.push_fmsRequest(eid1, def.msgid.GET_EARTHQUAKE_SENSOR_STATE,    "GET_EARTHQUAKE_SENSOR_STATE",      nil) 

@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <testsuites>
-    <testsuite name="LuaUnit" id="00001" package="" hostname="localhost" tests="2" timestamp="2017-09-14T11:25:35" time="0.000" errors="0" failures="0">
+    <testsuite name="LuaUnit" id="00001" package="" hostname="localhost" tests="5" timestamp="2017-09-14T14:13:36" time="0.004" errors="0" failures="1">
         <properties>
             <property name="Lua Version" value="Lua 5.1"/>
             <property name="LuaUnit Version" value="3.2"/>
         </properties>
-        <testcase classname="TestResponse" name="TestResponse.testSET_EARTHQUAKE_SENSOR_STATE" time="0.000">
+        <testcase classname="TestResponse" name="TestResponse.test_GET_METER_GAS_VALVE_STATE" time="0.000">
         </testcase>
-        <testcase classname="TestResponse" name="TestResponse.testSET_METER_STATUS" time="0.000">
+        <testcase classname="TestResponse" name="TestResponse.test_GET_METER_SUMMATION_DELIVERED" time="0.000">
+        </testcase>
+        <testcase classname="TestResponse" name="TestResponse.test_GET_OFLOW_DETECT_DURATION" time="0.000">
+            <failure type=".\tst\test_unit.lua:56: expected: &quot;1&quot;
+actual: &quot;MP_STATUS_SUCCESS&quot;">
+                <![CDATA[stack traceback:
+	.\tst\test_unit.lua:56: in function 'TestResponse.test_GET_OFLOW_DETECT_DURATION']]></failure>
+        </testcase>
+        <testcase classname="TestResponse" name="TestResponse.test_SET_EARTHQUAKE_SENSOR_STATE" time="0.000">
+        </testcase>
+        <testcase classname="TestResponse" name="TestResponse.test_SET_METER_STATUS" time="0.000">
         </testcase>
     <system-out/>
     <system-err/>
