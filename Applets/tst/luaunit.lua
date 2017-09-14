@@ -89,7 +89,6 @@ Options:
 ]]
 
 local is_equal -- defined here to allow calling from mismatchFormattingPureList
-os.remove("report.xml")
 ----------------------------------------------------------------
 --
 --                 general utility functions

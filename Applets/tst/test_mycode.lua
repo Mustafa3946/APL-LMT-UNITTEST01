@@ -58,8 +58,7 @@ end
 
 TestDiv = {}
 function TestDiv:testDivPositive()
-    --luaunit.assertEquals(div(4,2),2)
-    luaunit.assertEquals("MP_STATUS_SUCCESS","MP_STATUS_SUCCESS1")
+    luaunit.assertEquals(div(4,2),2)
 end
 
 function TestDiv:testDivZero()

@@ -31,14 +31,25 @@ TestResponse    =   {}
 local arg1            =   {}
 local arg2            =   {}
 local reportNumber    =   0
-local reportCommand   =   ""
+local reportCommand   =   {}
 
-function TestResponse:testResponse()
-    print("Test number  :   ", reportNumber, " Command name    :   ",  reportCommand)
-    luaunit.assertEquals(arg1,arg2)
-    --luaunit.assertStrMatches(arg1,arg2)
+function TestResponse:testSET_EARTHQUAKE_SENSOR_STATE()
+    for i = 1, reportNumber do
+        if reportCommand[i] == "SET_EARTHQUAKE_SENSOR_STATE" then
+            print("Test number  :   ", i, " Command name    :   ",  reportCommand[i])
+            luaunit.assertEquals(arg1[i],arg2[i])
+        end        
+    end
 end
 
+function TestResponse:testSET_METER_STATUS()
+    for i = 1, reportNumber do
+        if reportCommand[i] == "SET_METER_STATUS" then
+            print("Test number  :   ", i, " Command name    :   ",  reportCommand[i])
+            luaunit.assertEquals(arg1[i],arg2[i])
+        end        
+    end
+end
 
 ---------------------------------------------------------------------------------------------------
 -- Catch all fme.sendmessage calls
@@ -51,15 +62,9 @@ local function sendmessageCallback(msg)
     end
     if msg.error_details ~= nil then
         reportNumber                =   reportNumber    +   1
-        reportCommand               =   msg.msgname
-        arg1                        =   msg.error_details
-        arg2                        =   "MP_STATUS_SUCCESS"
-        luaunit.LuaUnit.verbosity   =   2
-        local runner                =   luaunit.LuaUnit.new()
-        --runner:setOutputType("tap")
-        runner:setOutputType("junit")
-        --os.exit( runner:runSuite() )
-        runner:runSuite("-v","-n", "report") 
+        reportCommand[reportNumber] =   msg.msgname
+        arg1[reportNumber]          =   msg.error_details
+        arg2[reportNumber]          =   "MP_STATUS_SUCCESS"
     end
 
 end
@@ -82,7 +87,12 @@ local function getmessageCallback(msg)
         local eid = msg["eid"]
         local payload = msg["payload"]
     else
-        os.exit()
+        luaunit.LuaUnit.verbosity   =   2
+        local runner                =   luaunit.LuaUnit.new()
+        --runner:setOutputType("tap")
+        runner:setOutputType("junit")
+        --os.exit( runner:runSuite() )
+        os.exit(runner:runSuite("-v","-n", "report"))         
     end
 end
 
@@ -559,7 +569,7 @@ fme.sim.push_fmsRequest(eid1, def.msgid.GET_METER_STATUS,               "GET_MET
 --]]
 
 test_setEarthquake()
---test_setMeterStatus()
+test_setMeterStatus()
 --[[
 test_getMeterType_2(eid1)
 test_setMeterStatus()

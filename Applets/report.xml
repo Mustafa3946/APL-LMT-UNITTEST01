@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <testsuites>
-    <testsuite name="LuaUnit" id="00001" package="" hostname="localhost" tests="1" timestamp="2017-09-14T10:07:42" time="0.000" errors="0" failures="0">
+    <testsuite name="LuaUnit" id="00001" package="" hostname="localhost" tests="2" timestamp="2017-09-14T11:10:34" time="0.001" errors="0" failures="0">
         <properties>
             <property name="Lua Version" value="Lua 5.1"/>
             <property name="LuaUnit Version" value="3.2"/>
         </properties>
-        <testcase classname="TestResponse" name="TestResponse.testResponse" time="0.000">
+        <testcase classname="TestResponse" name="TestResponse.testSET_EARTHQUAKE_SENSOR_STATE" time="0.000">
+        </testcase>
+        <testcase classname="TestResponse" name="TestResponse.testSET_METER_STATUS" time="0.000">
         </testcase>
     <system-out/>
     <system-err/>
