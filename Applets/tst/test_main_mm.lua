@@ -44,11 +44,8 @@ local function sendmessageCallback(msg)
     if msg["TYPE"]  ==  "L1" then
         LoraNicList[eid].handleLoraMessage(msg)
     end
-    if msg.error_details ~= nil then
-        TestResponse.reportNumber                             =   TestResponse.reportNumber    +   1
-        TestResponse.reportCommand[TestResponse.reportNumber] =   msg.msgname
-        TestResponse.arg1[TestResponse.reportNumber]          =   msg.error_details
-        TestResponse.arg2[TestResponse.reportNumber]          =   "MP_STATUS_SUCCESS"
+    if msg.result_code ~= nil then
+        TestResponse.rsp[msg.msgname]                         =   msg--.error_details
     end
 
 end
@@ -513,26 +510,20 @@ local bundleName = "SomeBundle"
 init(eid1, bundleName)
 init(eid2, bundleName)
 
-fme.sim.push_fmsRequest(eid1, def.msgid.GET_METER_GAS_VALVE_STATE,      "GET_METER_GAS_VALVE_STATE",        nil)
-fme.sim.push_fmsRequest(eid1, def.msgid.GET_METER_SUMMATION_DELIVERED,  "GET_METER_SUMMATION_DELIVERED",    nil)
 fme.sim.push_fmsRequest(eid1, def.msgid.GET_OFLOW_DETECT_DURATION,      "GET_OFLOW_DETECT_DURATION",        nil)
-
---[[
 fme.sim.push_fmsRequest(eid1, def.msgid.GET_PROTOCOL_VERSION,           "GET_PROTOCOL_VERSION",             nil) 
 fme.sim.push_fmsRequest(eid1, def.msgid.GET_METER_SERIAL_NUMBER,        "GET_METER_SERIAL_NUMBER",          nil)  
 fme.sim.push_fmsRequest(eid1, def.msgid.GET_EARTHQUAKE_SENSOR_STATE,    "GET_EARTHQUAKE_SENSOR_STATE",      nil) 
 fme.sim.push_fmsRequest(eid1, def.msgid.GET_PILOT_LIGHT_MODE,           "GET_PILOT_LIGHT_MODE",             nil)             
 fme.sim.push_fmsRequest(eid1, def.msgid.GET_COMMS_MODE,                 "GET_COMMS_MODE",                   nil)              
-fme.sim.push_fmsRequest(eid1, def.msgid.GET_ELECTRIC_QNT_VALUE,         "GET_ELECTRIC_QNT_VALUE",           nil)
-fme.sim.push_fmsRequest(eid1, def.msgid.GET_NIC_BATTERY_LIFE,           "GET_NIC_BATTERY_LIFE",             nil)
 fme.sim.push_fmsRequest(eid1, def.msgid.GET_METER_SUMMATION_DELIVERED,  "GET_METER_SUMMATION_DELIVERED",    nil)
-fme.sim.push_fmsRequest(eid2, def.msgid.GET_METER_TYPE,                 "GET_METER_TYPE",                   nil)
-fme.sim.push_fmsRequest(eid2, def.msgid.GET_METER_SUMMATION_DELIVERED,  "GET_METER_SUMMATION_DELIVERED",    nil)
-fme.sim.push_fmsRequest(eid1, def.msgid.GET_METER_CURRENT_PRESSURE,     "GET_METER_CURRENT_PRESSURE",       nil)
+fme.sim.push_fmsRequest(eid1, def.msgid.GET_ELECTRIC_QNT_VALUE,         "GET_ELECTRIC_QNT_VALUE",           nil)
 fme.sim.push_fmsRequest(eid1, def.msgid.GET_METER_GAS_VALVE_STATE,      "GET_METER_GAS_VALVE_STATE",        nil)
+fme.sim.push_fmsRequest(eid1, def.msgid.GET_NIC_BATTERY_LIFE,           "GET_NIC_BATTERY_LIFE",             nil)
+fme.sim.push_fmsRequest(eid2, def.msgid.GET_METER_TYPE,                 "GET_METER_TYPE",                   nil)
+fme.sim.push_fmsRequest(eid1, def.msgid.GET_METER_CURRENT_PRESSURE,     "GET_METER_CURRENT_PRESSURE",       nil)
 fme.sim.push_fmsRequest(eid1, def.msgid.GET_SUMMATION_REPORT_INTERVAL,  "GET_SUMMATION_REPORT_INTERVAL",    nil)
 fme.sim.push_fmsRequest(eid1, def.msgid.GET_PRESSURE_REPORT_INTERVAL,   "GET_PRESSURE_REPORT_INTERVAL",     nil)
-fme.sim.push_fmsRequest(eid1, def.msgid.GET_METER_GAS_VALVE_STATE,      "GET_METER_GAS_VALVE_STATE",        nil)
 fme.sim.push_fmsRequest(eid1, def.msgid.GET_SUMMATION_REPORT_INTERVAL,  "GET_SUMMATION_REPORT_INTERVAL",    nil)
 fme.sim.push_fmsRequest(eid1, def.msgid.GET_PRESSURE_REPORT_INTERVAL,   "GET_PRESSURE_REPORT_INTERVAL",     nil)
 fme.sim.push_fmsRequest(eid1, def.msgid.GET_METER_CUSTOMERID,           "GET_METER_CUSTOMERID",             nil)
@@ -549,44 +540,40 @@ fme.sim.push_fmsRequest(eid1, def.msgid.GET_MANUAL_RECOVER_ENABLE,      "GET_MAN
 fme.sim.push_fmsRequest(eid1, def.msgid.GET_METER_FIRMWARE_VERSION,     "GET_METER_FIRMWARE_VERSION",       nil)
 fme.sim.push_fmsRequest(eid1, def.msgid.GET_METER_SHUTOFF_CODES,        "GET_METER_SHUTOFF_CODES",          nil)
 fme.sim.push_fmsRequest(eid1, def.msgid.GET_METER_READING_VALUE,        "GET_METER_READING_VALUE",          nil)
-fme.sim.push_fmsRequest(eid1, def.msgid.GET_METER_TIME,                 "GET_METER_TIME",                   nil)
 fme.sim.push_fmsRequest(eid1, def.msgid.GET_METER_STATUS,               "GET_METER_STATUS",                 nil)
---]]
 
 test_setEarthquake()
 test_setMeterStatus()
---[[
-test_getMeterType_2(eid1)
-test_setMeterStatus()
-test_unsolicitedPressureGet()
-test_unsolicitedSummationWithEvt()
-testShutoffAssembly()
-test_processUnsolicitedSummation()
-test_processAlert(loradef.YUNGLOONG_LORA_ALERT, 2)           
 test_setSerial()
-test_duplicateFirstFragment(eid1)
-
 test_setPilot()
 test_setMeterComms()
-
 test_setNicMode()
 test_setNicSchedule()
-test_setBattery()
-test_setNicTimeCorrection()
 test_setGasValve(1)
-test_setGasValve(0)
-test_setSumReport(1234)
 test_setPressureReport()
 test_setCustId()
 test_oflowEnable(1)
-test_oflowEnable(0)
 test_setOflowDetectDuration()
-test_setOflowDetectRate()
 test_setPressureAlarmLevelLow()
 test_setPressureAlarmLevelHigh()
+test_setOflowDetectRate()
 test_setLeakDetectRange()
+
 test_setManualRecoverEnable()
 test_setMeterReadingValue()
+
+--[[
+testShutoffAssembly()
+test_processUnsolicitedSummation()
+test_processAlert(loradef.YUNGLOONG_LORA_ALERT, 2)           
+test_duplicateFirstFragment(eid1)
+test_setBattery()
+test_setNicTimeCorrection()
+test_setSumReport(1234)
+test_setGasValve(0)
+test_oflowEnable(0)
+
+
 
 --local respmsg = {}
 --responses.processGetNicVersion(respmsg, 22, "000102034205060747")
@@ -599,6 +586,10 @@ for code = 0x01, 0x63 do
 end
 test_setReadingValue()
 pushRandomMessages(100)
+test_getMeterType_2(eid1)
+test_unsolicitedPressureGet()
+test_unsolicitedSummationWithEvt()
+
 --]]
 
 --fme.sim.push_testEnd()
