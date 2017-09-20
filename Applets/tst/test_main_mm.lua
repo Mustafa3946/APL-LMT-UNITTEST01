@@ -505,7 +505,6 @@ end
 
 ---------------------------------------------------------------------------------------------------
 
-
 local bundleName = "SomeBundle"
 init(eid1, bundleName)
 init(eid2, bundleName)
