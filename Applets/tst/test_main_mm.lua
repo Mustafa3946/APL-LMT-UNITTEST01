@@ -73,7 +73,7 @@ local function getmessageCallback(msg)
         runner:setOutputType("tap")
         --runner:setOutputType("junit")
         --os.exit( runner:runSuite() )
-        os.exit(runner:runSuite())         
+        os.exit(runner:runSuite("-v"))         
     end
 end
 
