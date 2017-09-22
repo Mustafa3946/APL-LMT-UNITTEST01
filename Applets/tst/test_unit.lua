@@ -24,7 +24,7 @@ function TestResponse:test_GET_METER_SUMMATION_DELIVERED()
     TestResponse:common_responses(msgname)
     luaunit.assertIsNumber(TestResponse.rsp[msgname].summation_delivered)
     luaunit.assertIsNumber(TestResponse.rsp[msgname].timestamp)
-    luaunit.assertEquals(TestResponse.rsp[msgname].result_code,100)
+    luaunit.assertEquals(TestResponse.rsp[msgname].result_code,1)
 end
 ---------------------------------------------------------------------------------------------------
 
