@@ -11,7 +11,7 @@ TestResponse.new                =   function ()
 end
 ---------------------------------------------------------------------------------------------------
 function TestResponse:common_responses(msgname)
-    --luaunit.assertEquals(TestResponse.rsp[msgname].error_details,  "MP_STATUS_SUCCESS")
+    luaunit.assertEquals(TestResponse.rsp[msgname].error_details,  "MP_STATUS_SUCCESS")
     luaunit.assertEquals(TestResponse.rsp[msgname].result_code,0)
     luaunit.assertIsNumber(TestResponse.rsp[msgname].cid)
     luaunit.assertIsNumber(TestResponse.rsp[msgname].flags)
@@ -24,6 +24,7 @@ function TestResponse:test_GET_METER_SUMMATION_DELIVERED()
     TestResponse:common_responses(msgname)
     luaunit.assertIsNumber(TestResponse.rsp[msgname].summation_delivered)
     luaunit.assertIsNumber(TestResponse.rsp[msgname].timestamp)
+    luaunit.assertEquals(TestResponse.rsp[msgname].result_code,1)
 end
 ---------------------------------------------------------------------------------------------------
 
