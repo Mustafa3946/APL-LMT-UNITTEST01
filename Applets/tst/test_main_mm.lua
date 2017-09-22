@@ -72,8 +72,8 @@ local function getmessageCallback(msg)
         local runner                =   luaunit.LuaUnit.new()
         runner:setOutputType("tap")
         --runner:setOutputType("junit")
-        --os.exit( runner:runSuite() )
-        os.exit(runner:runSuite("-v", "-n", "report"))         
+        os.exit( runner:runSuite() )
+        --os.exit(runner:runSuite("-v", "-n", "report"))         
     end
 end
 
