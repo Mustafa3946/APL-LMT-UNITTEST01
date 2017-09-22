@@ -70,10 +70,10 @@ local function getmessageCallback(msg)
     else
         luaunit.LuaUnit.verbosity   =   2
         local runner                =   luaunit.LuaUnit.new()
-        runner:setOutputType("tap")
-        --runner:setOutputType("junit")
+        --runner:setOutputType("tap")
+        runner:setOutputType("junit")
         --os.exit( runner:runSuite() )
-        os.exit(runner:runSuite("-v"))         
+        os.exit(runner:runSuite("-v", "-n", "report"))         
     end
 end
 
