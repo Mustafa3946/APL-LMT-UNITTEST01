@@ -45,7 +45,7 @@ local function sendmessageCallback(msg)
         LoraNicList[eid].handleLoraMessage(msg)
     end
     if msg.result_code ~= nil then
-        TestResponse.rsp[msg.msgname]                         =   msg--.error_details
+        TestResponse.rsp[msg.msgname]                         =   msg
     end
 
 end
@@ -70,9 +70,9 @@ local function getmessageCallback(msg)
     else
         luaunit.LuaUnit.verbosity   =   2
         local runner                =   luaunit.LuaUnit.new()
-        --runner:setOutputType("tap")
+        runner:setOutputType("tap")
+        runner:runSuite()
         runner:setOutputType("junit")
-        --os.exit( runner:runSuite() )
         os.exit(runner:runSuite("-v", "-n", "report"))         
     end
 end
